@@ -1,4 +1,4 @@
-# complete-website-server-PulokSec
+# EZE-service-server-PulokSec
 Site Name: EZE Service
 Live Site: https://eze-service.web.app/
 
