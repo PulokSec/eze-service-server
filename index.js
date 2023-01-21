@@ -5,27 +5,29 @@ require('dotenv').config()
 const ObjectID = require('mongodb').ObjectID;
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.iyt5e.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority`;
 
-
 const app = express()
 
 app.use(express.json());
 app.use(cors());
 
-const port = 5000;
+// const port = 5000;
 
-app.get('/', (req, res) => {
-    res.send("WELCOME to EZE Service DB it's online")
-})
+
 
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
-client.connect(err => {
-
+const connection = client.connect()
+connection.then(err => {
+  
     const adminCollection = client.db("ezeService").collection("admin");
     const customerOrderCollection = client.db("ezeService").collection("ordered");
     const serviceCollection = client.db("ezeService").collection("services");
     const reviewCollection = client.db("ezeService").collection("review");
     const teamCollection = client.db("ezeService").collection("team");
 
+    app.get('/', (req, res) => {
+      res.send("WELCOME to EZE Service DB it's online")
+  })
+  console.log('EZE Service DB Connected');
 
     app.post('/addService', (req, res) => {
         const newService = req.body;
@@ -132,4 +134,5 @@ client.connect(err => {
 });
 
 
-app.listen(process.env.PORT || port)
+const port = process.env.PORT || 5000;
+app.listen(port, (err) => (err ? console.log('Filed to Listen on Port', port) : console.log('Listing for Port', port)));
